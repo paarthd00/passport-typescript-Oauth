@@ -1,7 +1,9 @@
+import { Request, Response, NextFunction } from 'express';
 /*
-FIX ME (types) 😭
+Fixed
+
 */
-export const ensureAuthenticated = (req: any, res: any, next: any) => {
+export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -9,11 +11,11 @@ export const ensureAuthenticated = (req: any, res: any, next: any) => {
 }
 
 /*
-FIX ME (types) 😭
+Fixed
 */
-export const forwardAuthenticated = (req: any, res: any, next: any) => {
-    if (!req.isAuthenticated()) {
-      return next();
-    }
-    res.redirect("/dashboard");
+export const forwardAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/dashboard");
 }
