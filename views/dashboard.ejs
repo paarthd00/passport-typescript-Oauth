@@ -1,3 +1,19 @@
 <h1 class="mt-4">Dashboard</h1>
-<p class="lead mb-3">Welcome <%= user.name %></p>
-<a href="/auth/logout" class="btn btn-secondary">Logout</a>
+<p class="lead mb-3">Welcome <%= user.name %>
+</p>
+<% if(user.role==='admin' ){ %>
+    <p>
+        this is an admin role
+    </p>
+    <% for (let ses in session){ %>
+        <div class="d-flex align-items-center">
+            <p>session-id :: <%= ses %>
+            </p>
+            <form action="/revoke" method="post">
+                <input hidden value="<%=ses  %>" type="text" name="id" id="">
+                <button class="btn btn-secondary" type="submit">revoke</button>
+            </form>
+        </div>
+        <% } %>
+            <% } %>
+                <a href="/auth/logout" class="btn btn-secondary">Logout</a>

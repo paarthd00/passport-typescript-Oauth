@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
+import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
 
 const localStrategy = new LocalStrategy(
@@ -13,22 +13,35 @@ const localStrategy = new LocalStrategy(
     return user
       ? done(null, user)
       : done(null, false, {
-          message: "Your login details are not valid. Please try again",
-        });
+        message: "Your login details are not valid. Please try again",
+      });
   }
 );
+
+declare module "express" {
+  interface User {
+    id: number,
+    name: string,
+    email: string,
+    password: string
+  }
+}
+
+interface IVerifyOptions {
+  message: string;
+}
 
 /*
 FIX ME (types) 😭
 */
-passport.serializeUser(function (user: any, done: any) {
-  done(null, user.id);
+passport.serializeUser(function (user: Express.User, done: (error: any, user?: Express.User | false, options?: IVerifyOptions) => void) {
+  done(null, (user as any).id);
 });
 
 /*
 FIX ME (types) 😭
 */
-passport.deserializeUser(function (id: number, done: any) {
+passport.deserializeUser(function (id: number, done: (error: any, user?: Express.User | false | null, options?: IVerifyOptions) => void) {
   let user = getUserById(id);
   if (user) {
     done(null, user);

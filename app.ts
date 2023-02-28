@@ -3,6 +3,7 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import path from "path";
 import passportMiddleware from './middleware/passportMiddleware';
+import { MemoryStore } from "express-session";
 
 const port = process.env.port || 8000;
 
@@ -10,8 +11,10 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
+export let memoryStore = new MemoryStore();
 app.use(
   session({
+    store: memoryStore,
     secret: "secret",
     resave: false,
     saveUninitialized: false,
@@ -31,16 +34,11 @@ app.use(express.json());
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 passportMiddleware(app);
-
 app.use((req, res, next) => {
-  console.log(`User details are: `);
-  console.log(req.user);
+  // console.log(`User details are: `);
+  // console.log(req.user);
+  // console.log("Entire session object:");
 
-  console.log("Entire session object:");
-  console.log(req.session);
-
-  console.log(`Session details are: `);
-  console.log((req.session as any).passport);
   next();
 });
 

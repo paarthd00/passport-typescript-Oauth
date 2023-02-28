@@ -13,7 +13,7 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
-    /* FIX ME: 😭 failureMsg needed when login fails */
+    failureMessage: true
   })
 );
 
@@ -23,5 +23,14 @@ router.get("/logout", (req, res) => {
   });
   res.redirect("/auth/login");
 });
+
+router.get('/github',
+  passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/dashboard');
+  });
 
 export default router;
