@@ -35,10 +35,7 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 passportMiddleware(app);
 app.use((req, res, next) => {
-  // console.log(`User details are: `);
-  // console.log(req.user);
-  // console.log("Entire session object:");
-
+  console.log(req.session);
   next();
 });
 

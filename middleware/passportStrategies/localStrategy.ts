@@ -9,12 +9,12 @@ const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
-    const user = getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-        message: "Your login details are not valid. Please try again",
-      });
+    try {
+      const user = getUserByEmailIdAndPassword(email, password);
+      return done(null, user ? user : false)
+    } catch (err: any) {
+      done(null, false, err);
+    }
   }
 );
 
@@ -31,16 +31,10 @@ interface IVerifyOptions {
   message: string;
 }
 
-/*
-FIX ME (types) 😭
-*/
 passport.serializeUser(function (user: Express.User, done: (error: any, user?: Express.User | false, options?: IVerifyOptions) => void) {
   done(null, (user as any).id);
 });
 
-/*
-FIX ME (types) 😭
-*/
 passport.deserializeUser(function (id: number, done: (error: any, user?: Express.User | false | null, options?: IVerifyOptions) => void) {
   let user = getUserById(id);
   if (user) {

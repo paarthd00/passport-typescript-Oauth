@@ -13,8 +13,7 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
         passReqToCallback: true,
     },
 
-    /* FIX ME 😭 */
-    async (req: Request, accessToken: string, refreshToken: any, profile: any, done: (error: any, user?: Express.User | false, options?: IVerifyOptions) => void) => {
+    async (req: Request, accessToken: string, refreshToken: string, profile: any, done: (error: any, user?: Express.User | false, options?: IVerifyOptions) => void) => {
         console.log({ profile });
         profile = userModel.createNewuser(Number(profile.id), profile.displayName);
         done(null, profile)
